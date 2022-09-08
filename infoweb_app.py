@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired
 # instantiate the application
 app = Flask(__name__)
 # generate secret key to prevent CSRF attacks
-app.config['SECRET_KEY'] = "Super Secret Key"
+app.config['SECRET_KEY'] = "secret"
 
 # account registration form class creation
 class AccountForm(FlaskForm):
