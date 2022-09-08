@@ -2,11 +2,36 @@ from flask import Flask, render_template, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
+from aux import dburi, csrftoken
+
+
 
 # instantiate the application
 app = Flask(__name__)
 # generate secret key to prevent CSRF attacks
-app.config['SECRET_KEY'] = "secret"
+app.config['SECRET_KEY'] = csrftoken
+# specify database connection details
+app.config['SQLALCHEMY_DATABASE_URI'] = dburi
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# declare database object
+sqldb = SQLAlchemy(app)
+
+# Website Patrons table
+class Patrons(sqldb.Model):
+    id = sqldb.Column(sqldb.Integer, primary_key=True)
+    username = sqldb.Column(sqldb.String(100), nullable=False)
+    email = sqldb.Column(sqldb.String(80), unique=True, nullable=False)
+    passworda = sqldb.Column(sqldb.String(100), nullable=False)
+    passwordb = sqldb.Column(sqldb.String(100), nullable=False)
+    requesedfreq = sqldb.Column(sqldb.String(100), nullable=False)
+    create_time = sqldb.Column(sqldb.DateTime(timezone=True),
+                           server_default=func.now())
+
+    def __repr__(self):
+        return f'<{self.username} - {self.id}>'
 
 # account registration form class creation
 class AccountForm(FlaskForm):
@@ -56,15 +81,5 @@ def signup():
 if __name__=='__main__':
     app.run(debug=True)
 
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
+
+# end of file
