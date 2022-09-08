@@ -1,0 +1,21 @@
+
+
+
+.homepage{
+    display: block;
+    width:300px;
+    height:300px;
+    background-color:purple;
+}
+
+.homepage p{
+    color: white;
+}
+
+.account{
+    color: white;
+    display: block;
+    width:300px;
+    height:300px;
+    background-color:purple;
+}
