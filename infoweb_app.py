@@ -1,17 +1,19 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, session
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from aux import dburi, csrftoken
+from datetime import datetime
+
 
 
 
 # instantiate the application
 app = Flask(__name__)
 # generate secret key to prevent CSRF attacks
-app.config['SECRET_KEY'] = csrftoken
+app.secret_key = csrftoken
 # specify database connection details
 app.config['SQLALCHEMY_DATABASE_URI'] = dburi
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -35,11 +37,22 @@ class Patrons(sqldb.Model):
 
 # account registration form class creation
 class AccountForm(FlaskForm):
-    name = StringField("Enter your Username or Email Address", validators=[DataRequired()], id='namefield')
+    inputname = StringField("Enter your Username", validators=[DataRequired()], id='namefield')
+    submit = SubmitField("Submit")
+
+# signup form class creation
+class SignupForm(FlaskForm):
+    inputusername = StringField("Enter your Username", validators=[DataRequired()], id='usernamefield')
+    inputemail = StringField("Enter your Email", validators=[DataRequired()], id='emailfield')
+    inputpassworda = StringField("Enter your Password", validators=[DataRequired()], id='passwordfielda')
+    inputpasswordb = StringField("Confirm your Password", validators=[DataRequired()], id='passwordfieldb')
     submit = SubmitField("Submit")
 
 # create routes for various webpages
 @app.route('/')
+def index():
+    return redirect(url_for('account'))
+
 @app.route('/homepage')
 def home():
     return render_template('homepage.html', title='Home')
@@ -61,22 +74,44 @@ def about():
 
 @app.route('/account', methods=['GET', 'POST'])
 def account():
-    name = None
+    session['name'] = None
     userform = AccountForm()
     # form data validation check
     if userform.validate_on_submit():
-        name= userform.name.data
-        userform.name.data = ''
+        session['name']= userform.inputname.data
+        userform.inputname.data = ''
+
+        # add logic to check if user exists in database #if user exists, redirect to login page #if user does not exist, redirect to signup page
+
+        return redirect(url_for('signup'))
 
     return render_template('account.html',
     title='Account Information',
-    name = name,
+    name = session['name'],
     userform = userform)
 
 # render about page
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    return render_template('signup.html', title='Sign Up')
+    session['username'] = None
+    session['email'] = None
+    session['passworda'] = None
+    session['passwordb'] = None
+
+    signupform = SignupForm()
+    # form data validation check
+    if signupform.validate_on_submit():
+        session['username']= signupform.inputusername.data
+        session['email']= signupform.inputemail.data
+        session['passworda']= signupform.inputpassworda.data
+        session['passwordb']= signupform.inputpasswordb.data
+        return  redirect(url_for('success'))
+
+    return render_template('signup.html', title='Sign Up', signupform = signupform)
+
+@app.route('/success', methods=['GET', 'POST'])
+def success():
+    return render_template('success.html', title='Success')
 
 if __name__=='__main__':
     app.run(debug=True)

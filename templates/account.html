@@ -3,22 +3,17 @@
 <h1> Account Information </h1>
 {%block contentA%}
 <center>
-<div class="account">
-  {% if name %}
-    {% include 'signup.html' %}
-  {% else %}
+  <div class="account">
     <h1>Who are you?</h1>
     <br/>
     <form method="POST">
       {{ userform.hidden_tag() }}
 
-      {{ userform.name.label(class="form-label") }}
-      {{ userform.name(class="form-control") }}
+      {{ userform.inputname.label(class="form-label") }}
+      {{ userform.inputname(class="form-control") }}
       <br/>
       {{ userform.submit(class="btn btn-primary") }}
     </form>
-
   </div>
-  {% endif %}
 </center>
 {%endblock contentA%}
