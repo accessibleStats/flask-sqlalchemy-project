@@ -1,0 +1,15 @@
+{%extends 'layout.html'%}
+
+
+
+
+{%block contentA%}
+    {% for users in updated_users %}
+
+    <h2> Date added is: {{ users.date }} </h2>
+    <h2> User name is: {{ users.username }} </h2>
+    <h2> User email is: {{ users.email }} </h2>
+    <h2> User passA is: {{ users.passworda }} </h2>
+    <h2> User passb is: {{ users.passwordb }} </h2>
+    {% endfor %}
+{%endblock contentA%}

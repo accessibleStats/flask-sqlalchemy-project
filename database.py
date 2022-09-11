@@ -1,6 +1,7 @@
 """
 
-Script to generate database instance - run only once, before launching app
+Script to generate database instance and create users table 
+- run only once, before launching app - no need to run script twice. -
 
 """
 

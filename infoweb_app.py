@@ -1,3 +1,4 @@
+import email
 from flask import Flask, render_template, redirect, url_for, session
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
@@ -23,14 +24,22 @@ sqldb = SQLAlchemy(app)
 
 # Website Patrons table
 class Patrons(sqldb.Model):
+    __tablename__ = 'users'
+
     id = sqldb.Column(sqldb.Integer, primary_key=True)
     username = sqldb.Column(sqldb.String(100), nullable=False)
     email = sqldb.Column(sqldb.String(80), unique=True, nullable=False)
     passworda = sqldb.Column(sqldb.String(100), nullable=False)
     passwordb = sqldb.Column(sqldb.String(100), nullable=False)
-    requesedfreq = sqldb.Column(sqldb.String(100), nullable=False)
-    create_time = sqldb.Column(sqldb.DateTime(timezone=True),
+    date = sqldb.Column(sqldb.DateTime(timezone=True),
                            server_default=func.now())
+
+    def __init__(self, username, email, passworda, passwordb, date):
+        self.username = username
+        self.email = email
+        self.passworda = passworda
+        self.passwordb = passwordb
+        self.date = date
 
     def __repr__(self):
         return f'<{self.username} - {self.id}>'
@@ -97,21 +106,27 @@ def signup():
     session['email'] = None
     session['passworda'] = None
     session['passwordb'] = None
+    session['date'] = None
 
     signupform = SignupForm()
     # form data validation check
     if signupform.validate_on_submit():
-        session['username']= signupform.inputusername.data
-        session['email']= signupform.inputemail.data
-        session['passworda']= signupform.inputpassworda.data
-        session['passwordb']= signupform.inputpasswordb.data
-        return  redirect(url_for('success'))
-
-    return render_template('signup.html', title='Sign Up', signupform = signupform)
+        username = Patrons.query.filter_by(email=signupform.inputemail.data).first()
+        if username is None:
+            username = Patrons(username=signupform.inputusername.data, email=signupform.inputemail.data, passworda=signupform.inputpassworda.data, passwordb=signupform.inputpasswordb.data, date=datetime.now())
+            sqldb.session.add(username)
+            sqldb.session.commit()
+    updated_users = Patrons.query.order_by(Patrons.date)
+    return render_template('signup.html', title='Sign Up', signupform = signupform, updated_users = updated_users)
 
 @app.route('/success', methods=['GET', 'POST'])
 def success():
     return render_template('success.html', title='Success')
+
+@app.route('/allusers', methods=['GET', 'POST'])
+def allusers():
+    updated_users = Patrons.query.order_by(Patrons.date)
+    return render_template('allusers.html', title='All Users', updated_users = updated_users)
 
 if __name__=='__main__':
     app.run(debug=True)
