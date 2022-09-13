@@ -4,12 +4,32 @@
 
 
 {%block contentA%}
-    {% for users in updated_users %}
 
-    <h2> Date added is: {{ users.date }} </h2>
-    <h2> User name is: {{ users.username }} </h2>
-    <h2> User email is: {{ users.email }} </h2>
-    <h2> User passA is: {{ users.passworda }} </h2>
-    <h2> User passb is: {{ users.passwordb }} </h2>
-    {% endfor %}
+    <h1 class="pt-5 pb-2">List of Site Members</h1>
+
+      <p class="lead alert alert-success"><strong>All site members</strong></p>
+
+	  <p class="ml-4"><a href="{{ url_for('home') }}">Homepage.</a></p>
+
+		<table class="table">
+			<tr>
+				<th>User Name</th>
+				<th>Signup Date</th>
+				<th>Email</th>
+				<th>Passworda</th>
+				<th>Passwordb</th>
+			</tr>
+
+			<!-- Loop through updated_users, which contains all members in db -->
+			{% for users in updated_users %}
+			<tr>
+				<td>{{ users.username }}</td>
+				<td>{{ users.date }}</td>
+				<td>${{ users.email }}</td>
+				<td>{{ users.passworda }}</td>
+				<td>{{ users.passwordb }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+
 {%endblock contentA%}
