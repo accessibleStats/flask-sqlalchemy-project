@@ -24,7 +24,7 @@ sqldb = SQLAlchemy(app)
 
 # Website Patrons table
 class Patrons(sqldb.Model):
-    __tablename__ = 'users'
+    __tablename__ = 'user_database'
 
     id = sqldb.Column(sqldb.Integer, primary_key=True)
     username = sqldb.Column(sqldb.String(100), nullable=False)
@@ -47,6 +47,7 @@ class Patrons(sqldb.Model):
 # account registration form class creation
 class AccountForm(FlaskForm):
     inputname = StringField("Enter your Username", validators=[DataRequired()], id='namefield')
+    inputpass = StringField("Enter your Password", validators=[DataRequired()], id='emailfield')
     submit = SubmitField("Submit")
 
 # signup form class creation
@@ -84,15 +85,23 @@ def about():
 @app.route('/account', methods=['GET', 'POST'])
 def account():
     session['name'] = None
+    session['pass']= None
     userform = AccountForm()
+    updated_users = Patrons.query.order_by(Patrons.date)
     # form data validation check
     if userform.validate_on_submit():
         session['name']= userform.inputname.data
+        session['pass']= userform.inputpass.data
         userform.inputname.data = ''
+        userform.inputpass.data = ''
 
-        # add logic to check if user exists in database #if user exists, redirect to login page #if user does not exist, redirect to signup page
-
-        return redirect(url_for('signup'))
+        # add logic to check if user/pass exists in database #if user exists, if user does not exist, redirect to signup page
+        for x in updated_users:
+            if session['name'] == x.username:
+                if session['pass'] == x.passworda:
+                    return redirect(url_for('main'))
+                return redirect(url_for('signup'))
+            return redirect(url_for('signup'))
 
     return render_template('account.html',
     title='Account Information',
@@ -110,23 +119,27 @@ def signup():
 
     signupform = SignupForm()
     # form data validation check
+    if session['name'] == None:
+        session['name'] = 'Guest'
+
     if signupform.validate_on_submit():
-        username = Patrons.query.filter_by(email=signupform.inputemail.data).first()
-        if username is None:
+        email = Patrons.query.filter_by(email=signupform.inputemail.data).first()
+
+        if email is None:
             username = Patrons(username=signupform.inputusername.data, email=signupform.inputemail.data, passworda=signupform.inputpassworda.data, passwordb=signupform.inputpasswordb.data, date=datetime.now())
             sqldb.session.add(username)
             sqldb.session.commit()
     updated_users = Patrons.query.order_by(Patrons.date)
     return render_template('signup.html', title='Sign Up', signupform = signupform, updated_users = updated_users)
 
-@app.route('/success', methods=['GET', 'POST'])
-def success():
-    return render_template('success.html', title='Success')
-
 @app.route('/allusers', methods=['GET', 'POST'])
 def allusers():
     updated_users = Patrons.query.order_by(Patrons.date)
     return render_template('allusers.html', title='All Users', updated_users = updated_users)
+
+@app.route('/main', methods=['GET', 'POST'])
+def main():
+    return render_template('main.html', title='Main')
 
 if __name__=='__main__':
     app.run(debug=True)

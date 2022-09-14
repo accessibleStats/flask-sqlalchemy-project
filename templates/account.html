@@ -2,18 +2,20 @@
 
 <h1> Account Information </h1>
 {%block contentA%}
-<center>
-  <div class="account">
-    <h1>Who are you?</h1>
-    <br/>
+
+  <div class="input-group">
+    <center> <h1> Enter Your Account Information ---> </h1> </center>
+    <br/><br/><br/><br/>
     <form method="POST">
       {{ userform.hidden_tag() }}
 
-      {{ userform.inputname.label(class="form-label") }}
+      {{ userform.inputname.label(class="input-group-addon") }}
       {{ userform.inputname(class="form-control") }}
+      {{ userform.inputpass.label(class="input-group-addon") }}
+      {{ userform.inputpass(class="form-control") }}
       <br/>
       {{ userform.submit(class="btn btn-primary") }}
     </form>
   </div>
-</center>
+
 {%endblock contentA%}
