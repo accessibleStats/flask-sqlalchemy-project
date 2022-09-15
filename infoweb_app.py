@@ -1,5 +1,9 @@
-import email
-from flask import Flask, render_template, redirect, url_for, session
+"""
+
+Web Application Framework - user management with SQLite3 database
+
+"""
+from flask import Flask, render_template, redirect, url_for, session, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -24,21 +28,23 @@ sqldb = SQLAlchemy(app)
 
 # Website Patrons table
 class Patrons(sqldb.Model):
-    __tablename__ = 'user_database'
+    __tablename__ = 'users'
 
     id = sqldb.Column(sqldb.Integer, primary_key=True)
     username = sqldb.Column(sqldb.String(100), nullable=False)
     email = sqldb.Column(sqldb.String(80), unique=True, nullable=False)
     passworda = sqldb.Column(sqldb.String(100), nullable=False)
     passwordb = sqldb.Column(sqldb.String(100), nullable=False)
+    password = sqldb.Column(sqldb.String(100), nullable=False)
     date = sqldb.Column(sqldb.DateTime(timezone=True),
                            server_default=func.now())
 
-    def __init__(self, username, email, passworda, passwordb, date):
+    def __init__(self, username, email, passworda, passwordb, password, date):
         self.username = username
         self.email = email
         self.passworda = passworda
         self.passwordb = passwordb
+        self.password = password
         self.date = date
 
     def __repr__(self):
@@ -47,8 +53,7 @@ class Patrons(sqldb.Model):
 # account registration form class creation
 class AccountForm(FlaskForm):
     inputname = StringField("Enter your Username", validators=[DataRequired()], id='namefield')
-    inputpass = StringField("Enter your Password", validators=[DataRequired()], id='emailfield')
-    submit = SubmitField("Submit")
+    submit = SubmitField("Login")
 
 # signup form class creation
 class SignupForm(FlaskForm):
@@ -85,23 +90,18 @@ def about():
 @app.route('/account', methods=['GET', 'POST'])
 def account():
     session['name'] = None
-    session['pass']= None
     userform = AccountForm()
     updated_users = Patrons.query.order_by(Patrons.date)
     # form data validation check
     if userform.validate_on_submit():
         session['name']= userform.inputname.data
-        session['pass']= userform.inputpass.data
-        userform.inputname.data = ''
-        userform.inputpass.data = ''
-
+        #userform.inputname.data = ''
         # add logic to check if user/pass exists in database #if user exists, if user does not exist, redirect to signup page
+        # logic does not work at this point - perhaps something wrong in for loop
         for x in updated_users:
             if session['name'] == x.username:
-                if session['pass'] == x.passworda:
-                    return redirect(url_for('main'))
-                return redirect(url_for('signup'))
-            return redirect(url_for('signup'))
+                return redirect(url_for('main')), session['name']
+            return redirect(url_for('signup')), session['name']
 
     return render_template('account.html',
     title='Account Information',
@@ -116,19 +116,27 @@ def signup():
     session['passworda'] = None
     session['passwordb'] = None
     session['date'] = None
+    session['password'] = None
 
     signupform = SignupForm()
     # form data validation check
     if session['name'] == None:
         session['name'] = 'Guest'
+    else: pass
 
     if signupform.validate_on_submit():
         email = Patrons.query.filter_by(email=signupform.inputemail.data).first()
-
-        if email is None:
-            username = Patrons(username=signupform.inputusername.data, email=signupform.inputemail.data, passworda=signupform.inputpassworda.data, passwordb=signupform.inputpasswordb.data, date=datetime.now())
+        if email is None and signupform.inputpassworda.data == signupform.inputpasswordb.data:
+            session['password'] = session['passworda']
+            username = Patrons(username=signupform.inputusername.data, email=signupform.inputemail.data, passworda=signupform.inputpassworda.data, passwordb=signupform.inputpasswordb.data, password=session['password'], date=datetime.now())
             sqldb.session.add(username)
             sqldb.session.commit()
+            return redirect(url_for('main'))
+        elif email is None and signupform.inputpassworda.data != signupform.inputpasswordb.data:
+            flash('Passwords do not match. Please try again.', 'danger')
+        elif email is not None:
+            flash('Email already exists. Please try again.', 'danger')
+
     updated_users = Patrons.query.order_by(Patrons.date)
     return render_template('signup.html', title='Sign Up', signupform = signupform, updated_users = updated_users)
 

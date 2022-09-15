@@ -4,18 +4,26 @@
 {%block contentA%}
 
   <div class="input-group">
-    <center> <h1> Enter Your Account Information ---> </h1> </center>
-    <br/><br/><br/><br/>
+    <h1> Enter Your Account Information ---> </h1>
     <form method="POST">
       {{ userform.hidden_tag() }}
 
       {{ userform.inputname.label(class="input-group-addon") }}
       {{ userform.inputname(class="form-control") }}
-      {{ userform.inputpass.label(class="input-group-addon") }}
-      {{ userform.inputpass(class="form-control") }}
       <br/>
       {{ userform.submit(class="btn btn-primary") }}
     </form>
   </div>
 
 {%endblock contentA%}
+
+{%block contentB%}
+<br/><br/><br/><br/>
+  <a href="{{ url_for('signup') }}" class="btn btn-secondary">Sign Up</a>
+
+{%endblock contentB%}
+
+{%block contentC%}
+
+
+{%endblock contentC%}
