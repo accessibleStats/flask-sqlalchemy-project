@@ -50,12 +50,12 @@ class Patrons(sqldb.Model):
     def __repr__(self):
         return f'<{self.username} - {self.id}>'
 
-# account registration form class creation
+# FlaskForm for grabbing username information
 class AccountForm(FlaskForm):
     inputname = StringField("Enter your Username", validators=[DataRequired()], id='namefield')
-    submit = SubmitField("Login")
+    submit = SubmitField("Proceed to Signup Page")
 
-# signup form class creation
+# signup FlaskForm
 class SignupForm(FlaskForm):
     inputusername = StringField("Enter your Username", validators=[DataRequired()], id='usernamefield')
     inputemail = StringField("Enter your Email", validators=[DataRequired()], id='emailfield')
@@ -63,14 +63,47 @@ class SignupForm(FlaskForm):
     inputpasswordb = StringField("Confirm your Password", validators=[DataRequired()], id='passwordfieldb')
     submit = SubmitField("Submit")
 
-# create routes for various webpages
+# signin FlaskForm
+class SigninForm(FlaskForm):
+    sname = StringField("Enter your Username", validators=[DataRequired()], id='snamefield')
+    spass = StringField("Enter your Email", validators=[DataRequired()], id='spassfield')
+    submit = SubmitField("Submit")
+
+# create routes index first
 @app.route('/')
 def index():
     return redirect(url_for('account'))
-
+# homepage route
 @app.route('/homepage')
 def home():
     return render_template('homepage.html', title='Home')
+# signin route
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
+    #define variables
+    session['sname'] = None
+    session['spass'] = None
+    updated_users = Patrons.query.order_by(Patrons.date)
+    # instantiate signin form
+    signinform = SigninForm()
+    # this grabs the user input from the previous page, if entered. if not, the user will be "Guest"
+    if session['name'] == None:
+        session['name'] = 'Guest'
+    else: pass
+    # form data validation check (if submit button is pressed, and data is valid, execute code)
+    if signinform.validate_on_submit():
+        session['sname'] = signinform.sname.data
+        session['spass'] = signinform.spass.data
+        # add logic to check if user/pass exists in database #if user exists, if user does not exist, redirect to signup page
+        for x in updated_users:
+            if session['sname'] == x.username and session['spass'] == x.password:
+                return redirect(url_for('main')), session['name']
+            return redirect(url_for('signup')), session['name']
+
+    return render_template('signin.html',
+    title='Sign In',
+    name = session['name'],
+    signinform = signinform)
 
 # create routes for error pages
 #client side - page not found error
@@ -97,7 +130,6 @@ def account():
         session['name']= userform.inputname.data
         #userform.inputname.data = ''
         # add logic to check if user/pass exists in database #if user exists, if user does not exist, redirect to signup page
-        # logic does not work at this point - perhaps something wrong in for loop
         for x in updated_users:
             if session['name'] == x.username:
                 return redirect(url_for('main')), session['name']
@@ -108,48 +140,55 @@ def account():
     name = session['name'],
     userform = userform)
 
-# render about page
+# render signup page for new users
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    #define variables
     session['username'] = None
     session['email'] = None
     session['passworda'] = None
     session['passwordb'] = None
     session['date'] = None
     session['password'] = None
-
+    # instantiate signup form
     signupform = SignupForm()
-    # form data validation check
+    # this grabs the user input from the previous page, if entered. if not, the user will be "Guest"
     if session['name'] == None:
         session['name'] = 'Guest'
     else: pass
-
+    # form data validation check (if submit button is pressed, and data is valid, execute code)
     if signupform.validate_on_submit():
         email = Patrons.query.filter_by(email=signupform.inputemail.data).first()
+        # check if email already exists in database and passwords match.
         if email is None and signupform.inputpassworda.data == signupform.inputpasswordb.data:
-            session['password'] = session['passworda']
-            username = Patrons(username=signupform.inputusername.data, email=signupform.inputemail.data, passworda=signupform.inputpassworda.data, passwordb=signupform.inputpasswordb.data, password=session['password'], date=datetime.now())
+            session['password'] = signupform.inputpassworda.data
+            username = Patrons(username=signupform.inputusername.data, email=signupform.inputemail.data, passworda=signupform.inputpassworda.data, passwordb=signupform.inputpasswordb.data, password=signupform.inputpassworda.data, date=datetime.now())
             sqldb.session.add(username)
             sqldb.session.commit()
             return redirect(url_for('main'))
+        # error message for non-matching passwords
         elif email is None and signupform.inputpassworda.data != signupform.inputpasswordb.data:
             flash('Passwords do not match. Please try again.', 'danger')
+        # error message for existing email
         elif email is not None:
             flash('Email already exists. Please try again.', 'danger')
-
+    # query database for all users ordered by signup date
     updated_users = Patrons.query.order_by(Patrons.date)
     return render_template('signup.html', title='Sign Up', signupform = signupform, updated_users = updated_users)
 
 @app.route('/allusers', methods=['GET', 'POST'])
 def allusers():
+    # administrative page to view all users in database -- only use for troubleshooting database -- not for production
     updated_users = Patrons.query.order_by(Patrons.date)
     return render_template('allusers.html', title='All Users', updated_users = updated_users)
 
 @app.route('/main', methods=['GET', 'POST'])
 def main():
+    # this will be the main page for the user after successfully logging in
     return render_template('main.html', title='Main')
 
 if __name__=='__main__':
+    # run the app -- debug mode is on -- not for production -- turn off debug mode for production
     app.run(debug=True)
 
 
