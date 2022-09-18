@@ -5,8 +5,7 @@ and an SQLite3 database.
 
 To use this framework: setup a virtual environment (instructions here https://flask.palletsprojects.com/en/2.2.x/installation/) and download dependencies.
 
-Currently, the program contains various html pages, navigation logic, database/table creation, user management, and form/data validation. At this point, 
-the project is pretty bare bones, but it has the potential to be converted into a personal blog, portfolio site, commerce page, etc.
+Currently, the program contains various html pages, navigation logic, database/table creation, user management, and form/data validation. The project is designed to be easily converted into a personal blog, portfolio site, commerce page, etc.
 
 
 Find more information about the core components of this project respectively at:
