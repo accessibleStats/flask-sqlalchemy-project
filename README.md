@@ -3,7 +3,7 @@
 This project provides a Python version 3.7 framework for a Flask application, using a (mainly) Bootstrap 5.2 frontend, SQLAlchemy for data management/transport,
 and an SQLite3 database.
 
-To use this framework: setup a virtual environment (instructions here https://flask.palletsprojects.com/en/2.2.x/installation/) and download dependencies.
+To use this project: setup a virtual environment (instructions here https://flask.palletsprojects.com/en/2.2.x/installation/) and download dependencies.
 
 Currently, the program contains various html pages, navigation logic, database/table creation, user management, and form/data validation. The project is designed to be easily converted into a personal blog, portfolio site, commerce page, etc.
 
