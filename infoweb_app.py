@@ -13,8 +13,6 @@ from aux import dburi, csrftoken
 from datetime import datetime
 
 
-
-
 # instantiate the application
 app = Flask(__name__)
 # generate secret key to prevent CSRF attacks
@@ -27,6 +25,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 sqldb = SQLAlchemy(app)
 
 # Website Patrons table
+
+
 class Patrons(sqldb.Model):
     __tablename__ = 'users'
 
@@ -37,7 +37,7 @@ class Patrons(sqldb.Model):
     passwordb = sqldb.Column(sqldb.String(100), nullable=False)
     password = sqldb.Column(sqldb.String(100), nullable=False)
     date = sqldb.Column(sqldb.DateTime(timezone=True),
-                           server_default=func.now())
+                        server_default=func.now())
 
     def __init__(self, username, email, passworda, passwordb, password, date):
         self.username = username
@@ -51,36 +51,55 @@ class Patrons(sqldb.Model):
         return f'<{self.username} - {self.id}>'
 
 # FlaskForm for grabbing username information
+
+
 class AccountForm(FlaskForm):
-    inputname = StringField("Enter your Username", validators=[DataRequired()], id='namefield')
+    inputname = StringField("Enter your Username", validators=[
+                            DataRequired()], id='namefield')
     submit = SubmitField("Proceed to Signup Page")
 
 # signup FlaskForm
+
+
 class SignupForm(FlaskForm):
-    inputusername = StringField("Enter your Username", validators=[DataRequired()], id='usernamefield')
-    inputemail = StringField("Enter your Email", validators=[DataRequired()], id='emailfield')
-    inputpassworda = StringField("Enter your Password", validators=[DataRequired()], id='passwordfielda')
-    inputpasswordb = StringField("Confirm your Password", validators=[DataRequired()], id='passwordfieldb')
+    inputusername = StringField("Enter your Username", validators=[
+                                DataRequired()], id='usernamefield')
+    inputemail = StringField("Enter your Email", validators=[
+                             DataRequired()], id='emailfield')
+    inputpassworda = StringField("Enter your Password", validators=[
+                                 DataRequired()], id='passwordfielda')
+    inputpasswordb = StringField("Confirm your Password", validators=[
+                                 DataRequired()], id='passwordfieldb')
     submit = SubmitField("Submit")
 
 # signin FlaskForm
+
+
 class SigninForm(FlaskForm):
-    sname = StringField("Enter your Username", validators=[DataRequired()], id='snamefield')
-    spass = StringField("Enter your Email", validators=[DataRequired()], id='spassfield')
+    sname = StringField("Enter your Username", validators=[
+                        DataRequired()], id='snamefield')
+    spass = StringField("Enter your Email", validators=[
+                        DataRequired()], id='spassfield')
     submit = SubmitField("Submit")
 
 # create routes index first
+
+
 @app.route('/')
 def index():
     return redirect(url_for('account'))
 # homepage route
+
+
 @app.route('/homepage')
 def home():
     return render_template('homepage.html', title='Home')
 # signin route
+
+
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
-    #define variables
+    # define variables
     session['sname'] = None
     session['spass'] = None
     updated_users = Patrons.query.order_by(Patrons.date)
@@ -89,7 +108,8 @@ def signin():
     # this grabs the user input from the previous page, if entered. if not, the user will be "Guest"
     if session['name'] == None:
         session['name'] = 'Guest'
-    else: pass
+    else:
+        pass
     # form data validation check (if submit button is pressed, and data is valid, execute code)
     if signinform.validate_on_submit():
         session['sname'] = signinform.sname.data
@@ -101,24 +121,31 @@ def signin():
             return redirect(url_for('signup')), session['name']
 
     return render_template('signin.html',
-    title='Sign In',
-    name = session['name'],
-    signinform = signinform)
+                           title='Sign In',
+                           name=session['name'],
+                           signinform=signinform)
 
 # create routes for error pages
-#client side - page not found error
+# client side - page not found error
+
+
 @app.errorhandler(404)
 def page_notfound(e):
     return render_template('404.html'), 404
-#server side errpr
+# server side errpr
+
+
 @app.errorhandler(500)
 def page_notfound(e):
     return render_template('500.html'), 500
 
 # render about page
+
+
 @app.route('/about')
 def about():
     return render_template('about.html', title='About Page')
+
 
 @app.route('/account', methods=['GET', 'POST'])
 def account():
@@ -127,7 +154,7 @@ def account():
     updated_users = Patrons.query.order_by(Patrons.date)
     # form data validation check
     if userform.validate_on_submit():
-        session['name']= userform.inputname.data
+        session['name'] = userform.inputname.data
         #userform.inputname.data = ''
         # add logic to check if user/pass exists in database #if user exists, if user does not exist, redirect to signup page
         for x in updated_users:
@@ -136,14 +163,16 @@ def account():
             return redirect(url_for('signup')), session['name']
 
     return render_template('account.html',
-    title='Account Information',
-    name = session['name'],
-    userform = userform)
+                           title='Account Information',
+                           name=session['name'],
+                           userform=userform)
 
 # render signup page for new users
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    #define variables
+    # define variables
     session['username'] = None
     session['email'] = None
     session['passworda'] = None
@@ -155,14 +184,17 @@ def signup():
     # this grabs the user input from the previous page, if entered. if not, the user will be "Guest"
     if session['name'] == None:
         session['name'] = 'Guest'
-    else: pass
+    else:
+        pass
     # form data validation check (if submit button is pressed, and data is valid, execute code)
     if signupform.validate_on_submit():
-        email = Patrons.query.filter_by(email=signupform.inputemail.data).first()
+        email = Patrons.query.filter_by(
+            email=signupform.inputemail.data).first()
         # check if email already exists in database and passwords match.
         if email is None and signupform.inputpassworda.data == signupform.inputpasswordb.data:
             session['password'] = signupform.inputpassworda.data
-            username = Patrons(username=signupform.inputusername.data, email=signupform.inputemail.data, passworda=signupform.inputpassworda.data, passwordb=signupform.inputpasswordb.data, password=signupform.inputpassworda.data, date=datetime.now())
+            username = Patrons(username=signupform.inputusername.data, email=signupform.inputemail.data, passworda=signupform.inputpassworda.data,
+                               passwordb=signupform.inputpasswordb.data, password=signupform.inputpassworda.data, date=datetime.now())
             sqldb.session.add(username)
             sqldb.session.commit()
             return redirect(url_for('main'))
@@ -174,20 +206,23 @@ def signup():
             flash('Email already exists. Please try again.', 'danger')
     # query database for all users ordered by signup date
     updated_users = Patrons.query.order_by(Patrons.date)
-    return render_template('signup.html', title='Sign Up', signupform = signupform, updated_users = updated_users)
+    return render_template('signup.html', title='Sign Up', signupform=signupform, updated_users=updated_users)
+
 
 @app.route('/allusers', methods=['GET', 'POST'])
 def allusers():
     # administrative page to view all users in database -- only use for troubleshooting database -- not for production
     updated_users = Patrons.query.order_by(Patrons.date)
-    return render_template('allusers.html', title='All Users', updated_users = updated_users)
+    return render_template('allusers.html', title='All Users', updated_users=updated_users)
+
 
 @app.route('/main', methods=['GET', 'POST'])
 def main():
     # this will be the main page for the user after successfully logging in
     return render_template('main.html', title='Main')
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     # run the app -- debug mode is on -- not for production -- turn off debug mode for production
     app.run(debug=True)
 

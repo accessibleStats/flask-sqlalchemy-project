@@ -5,33 +5,33 @@
 
 {%block contentA%}
 
-    <h1 class="pt-5 pb-2">List of Site Members</h1>
+<h1 class="pt-5 pb-2">List of Site Members</h1>
 
-      <p class="lead alert alert-success"><strong>All site members</strong></p>
+<p class="lead alert alert-success"><strong>All site members</strong></p>
 
-	  <p class="ml-4"><a href="{{ url_for('home') }}">Homepage.</a></p>
+<p class="ml-4"><a href="{{ url_for('home') }}">Homepage.</a></p>
 
-		<table class="table">
-			<tr>
-				<th>User Name</th>
-				<th>Signup Date</th>
-				<th>Email</th>
-				<th>Password</th>
-				<th>Passworda</th>
-				<th>Passwordb</th>
-			</tr>
+<table class="table">
+	<tr>
+		<th>User Name</th>
+		<th>Signup Date</th>
+		<th>Email</th>
+		<th>Password</th>
+		<th>Passworda</th>
+		<th>Passwordb</th>
+	</tr>
 
-			<!-- Loop through updated_users, which contains all members in db -->
-			{% for users in updated_users %}
-			<tr>
-				<td>{{ users.username }}</td>
-				<td>{{ users.date }}</td>
-				<td>{{ users.email }}</td>
-				<td>{{ users.password }}</td>
-				<td>{{ users.passworda }}</td>
-				<td>{{ users.passwordb }}</td>
-			</tr>
-			{% endfor %}
-		</table>
+	<!-- Loop through updated_users, which contains all members in db -->
+	{% for users in updated_users %}
+	<tr>
+		<td>{{ users.username }}</td>
+		<td>{{ users.date }}</td>
+		<td>{{ users.email }}</td>
+		<td>{{ users.password }}</td>
+		<td>{{ users.passworda }}</td>
+		<td>{{ users.passwordb }}</td>
+	</tr>
+	{% endfor %}
+</table>
 
 {%endblock contentA%}

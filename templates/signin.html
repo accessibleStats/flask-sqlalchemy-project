@@ -4,26 +4,26 @@
 
 {%block contentA%}
 
-    <h1 class="pt-5 pb-2">Let's get you signed in!> </h1>
+<h1 class="pt-5 pb-2">Let's get you signed in!> </h1>
 
 {%endblock contentA%}
 
 {% block contentB %}
 <center>
-<div class="signup">
-  <form method="POST">
-    {{ signinform.hidden_tag() }}
-    {{ signinform.sname.label(class="form-label") }}
-    {{ signinform.sname(class="form-control") }}
-    <br/>
-    {{ signinform.spass.label(class="form-label") }}
-    {{ signinform.spass(class="form-control") }}
-    <br/>
-    {{ signinform.submit(class="btn btn-primary") }}
-  </form>
-</div>
-<br/><br/>
-<a href="{{ url_for('home') }}" class="btn btn-primary">Back to Homepage</a>
+  <div class="signup">
+    <form method="POST">
+      {{ signinform.hidden_tag() }}
+      {{ signinform.sname.label(class="form-label") }}
+      {{ signinform.sname(class="form-control") }}
+      <br />
+      {{ signinform.spass.label(class="form-label") }}
+      {{ signinform.spass(class="form-control") }}
+      <br />
+      {{ signinform.submit(class="btn btn-primary") }}
+    </form>
+  </div>
+  <br /><br />
+  <a href="{{ url_for('home') }}" class="btn btn-primary">Back to Homepage</a>
 </center>
 
 
