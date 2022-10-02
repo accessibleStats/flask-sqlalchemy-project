@@ -24,9 +24,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # declare database object
 sqldb = SQLAlchemy(app)
 
+
 # Website Patrons table
-
-
 class Patrons(sqldb.Model):
     __tablename__ = 'users'
 
@@ -50,17 +49,8 @@ class Patrons(sqldb.Model):
     def __repr__(self):
         return f'<{self.username} - {self.id}>'
 
-# FlaskForm for grabbing username information
-
-
-class AccountForm(FlaskForm):
-    inputname = StringField("Enter your Username", validators=[
-                            DataRequired()], id='namefield')
-    submit = SubmitField("Proceed to Signup Page")
 
 # signup FlaskForm
-
-
 class SignupForm(FlaskForm):
     inputusername = StringField("Enter your Username", validators=[
                                 DataRequired()], id='usernamefield')
@@ -72,52 +62,46 @@ class SignupForm(FlaskForm):
                                  DataRequired()], id='passwordfieldb')
     submit = SubmitField("Submit")
 
+
 # signin FlaskForm
-
-
 class SigninForm(FlaskForm):
-    sname = StringField("Enter your Username", validators=[
-                        DataRequired()], id='snamefield')
-    spass = StringField("Enter your Email", validators=[
+    name = StringField("Enter your Username", validators=[
+        DataRequired()], id='snamefield')
+    passw = StringField("Enter your Password", validators=[
                         DataRequired()], id='spassfield')
     submit = SubmitField("Submit")
 
+
 # create routes index first
-
-
 @app.route('/')
 def index():
-    return redirect(url_for('account'))
+    return redirect(url_for('home'))
+
+
 # homepage route
-
-
 @app.route('/homepage')
 def home():
     return render_template('homepage.html', title='Home')
+
+
 # signin route
-
-
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
     # define variables
-    session['sname'] = None
-    session['spass'] = None
+    session['name'] = None
+    session['passw'] = None
     updated_users = Patrons.query.order_by(Patrons.date)
     # instantiate signin form
     signinform = SigninForm()
-    # this grabs the user input from the previous page, if entered. if not, the user will be "Guest"
-    if session['name'] == None:
-        session['name'] = 'Guest'
-    else:
-        pass
     # form data validation check (if submit button is pressed, and data is valid, execute code)
     if signinform.validate_on_submit():
-        session['sname'] = signinform.sname.data
-        session['spass'] = signinform.spass.data
+        session['name'] = signinform.name.data
+        session['passw'] = signinform.passw.data
         # add logic to check if user/pass exists in database #if user exists, if user does not exist, redirect to signup page
+        ###### having issue with checking database for user/pass info ######
         for x in updated_users:
-            if session['sname'] == x.username and session['spass'] == x.password:
-                return redirect(url_for('main')), session['name']
+            if session['name'] == x.username and session['passw'] == x.password:
+                return redirect(url_for('main')), session['name'], session['passw']
             return redirect(url_for('signup')), session['name']
 
     return render_template('signin.html',
@@ -125,51 +109,37 @@ def signin():
                            name=session['name'],
                            signinform=signinform)
 
+
 # create routes for error pages
 # client side - page not found error
-
-
 @app.errorhandler(404)
 def page_notfound(e):
     return render_template('404.html'), 404
+
+
 # server side errpr
-
-
 @app.errorhandler(500)
 def page_notfound(e):
     return render_template('500.html'), 500
 
+
 # render about page
-
-
 @app.route('/about')
 def about():
     return render_template('about.html', title='About Page')
 
+###### This will be where users can access their account information ######
+# placeholder for now of homepage #
+
 
 @app.route('/account', methods=['GET', 'POST'])
 def account():
-    session['name'] = None
-    userform = AccountForm()
-    updated_users = Patrons.query.order_by(Patrons.date)
-    # form data validation check
-    if userform.validate_on_submit():
-        session['name'] = userform.inputname.data
-        #userform.inputname.data = ''
-        # add logic to check if user/pass exists in database #if user exists, if user does not exist, redirect to signup page
-        for x in updated_users:
-            if session['name'] == x.username:
-                return redirect(url_for('main')), session['name']
-            return redirect(url_for('signup')), session['name']
+    return render_template('homepage.html',
+                           title='Home')
+#######################################################################
 
-    return render_template('account.html',
-                           title='Account Information',
-                           name=session['name'],
-                           userform=userform)
 
 # render signup page for new users
-
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     # define variables
@@ -225,6 +195,3 @@ def main():
 if __name__ == '__main__':
     # run the app -- debug mode is on -- not for production -- turn off debug mode for production
     app.run(debug=True)
-
-
-# end of file

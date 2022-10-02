@@ -1,5 +1,9 @@
+/* apply the following to all H1's */
+
 h1 {
     color: black;
+    font-size: 3em;
+    font-weight: bold;
 }
 
 /*div.containerA {
@@ -8,22 +12,153 @@ h1 {
     background-color: white;
 }*/
 
+/* CSS for Layout page - impacts all extentions of layout page */
+#layoutcontainera {
+    display: flex;
+    justify-content: center;
+    height: 350px;
+    width: auto;
+    flex-wrap: wrap;
+}
+
 #static_image {
-    height: 100px;
-    width: 100px;
-    opacity: 1;
-}
-
-.homepage_img {
-    background-image: url("https://images.unsplash.com/photo-1663387959582-d53357bb0f1e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1335&q=80");
-    height: 100%;
     width: 100%;
+    height: 100%;
+    background-image: url("banner-g604d86a61_1920.jpg");
+    background-size: cover;
 }
 
+/* Code for altering Homepage objects */
 #homewho {
     font-size: 20px;
     font-family: 'Roboto', sans-serif;
     color: black;
     text-align: center;
-    text
+}
+
+#homecontainera {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #48bfe3;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    padding: 15px;
+}
+
+
+#homecontainerc {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 500px;
+    width: 100%;
+    background-color: #000080;
+}
+
+#homecontainerc div {
+    height: 200px;
+    width: 200px;
+}
+
+#homediv01 {
+    background-color: #80ffdb;
+}
+
+#homediv01:hover {
+    background-color: #f90707;
+    border-radius: 50%;
+}
+
+#homediv02 {
+    background-color: #64dfdf;
+}
+
+#homediv02:hover {
+    background-color: #000000;
+    border-radius: 50%;
+}
+
+#homediv03 {
+    background-color: #48bfe3;
+}
+
+#homediv03:hover {
+    background-color: #f90707;
+    border-radius: 50%;
+}
+
+#homediv04 {
+    background-color: #5390d9;
+}
+
+#homediv04:hover {
+    background-color: #000000;
+    border-radius: 50%;
+}
+
+#homediv05 {
+    background-color: #6930c3;
+}
+
+#homediv05:hover {
+    background-color: #f90707;
+    border-radius: 50%;
+}
+
+/* code for signup page */
+.signupcontainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #48bfe3;
+    border: 10px;
+    border-style: solid;
+    border-color: black;
+    padding: 20px;
+}
+
+#signupPA {
+    font-size: 26px;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+    text-align: center;
+    text-decoration: #6930c3 wavy underline;
+}
+
+#signupPB {
+    font-size: 30px;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+}
+
+#signupcontainerb {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #48bfe3;
+    padding: 15px;
+}
+
+#bhsignbuttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #48bfe3;
+    padding: 15px;
 }

@@ -1,14 +1,17 @@
 {%extends 'layout.html'%}
 
 {% block contentA %}
-<h1>Hi, {{ session['name'] }}</h1>
-<p> It looks like your username or password was not found in the system.</p>
-<br />
-<strong> If this is your first time visiting, please enter your information below: </strong>
+
+<container class="signupcontainer" id="signupcontainera">
+  <h1>Hi, {{ session['name'] }}</h1>
+  <p id="signupPA"> Let's signup for full site access.</p>
+  <p id="signupPB"> Enter your information below: </p>
+</container>
+
 {% endblock contentA %}
 
 {% block contentB %}
-<center>
+<container class="signupform" id="signupcontainerb">
   <div class="signup">
     <form method="POST">
       {{ signupform.hidden_tag() }}
@@ -27,9 +30,15 @@
       {{ signupform.submit(class="btn btn-primary") }}
     </form>
   </div>
-  <br /><br />
-  <a href="{{ url_for('home') }}" class="btn btn-primary">Back to Homepage</a>
-</center>
+</container>
+
+<container id="bhsignbuttons">
+  <div class="bhsignbuttons">
+    <a href="{{ url_for('signin') }}" class="btn btn-primary">Login</a>
+    <a href="{{ url_for('home') }}" class="btn btn-primary">Home</a>
+  </div>
+</container>
+
 {% endblock contentB %}
 
 {% block contentC %}
