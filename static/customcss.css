@@ -1,0 +1,29 @@
+h1 {
+    color: black;
+}
+
+/*div.containerA {
+    width: 200px;
+    text-align: center;
+    background-color: white;
+}*/
+
+#static_image {
+    height: 100px;
+    width: 100px;
+    opacity: 1;
+}
+
+.homepage_img {
+    background-image: url("https://images.unsplash.com/photo-1663387959582-d53357bb0f1e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1335&q=80");
+    height: 100%;
+    width: 100%;
+}
+
+#homewho {
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+    text-align: center;
+    text
+}
