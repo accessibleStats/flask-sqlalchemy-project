@@ -3,8 +3,8 @@
 {% block contentA %}
 
 <container class="signupcontainer" id="signupcontainera">
-  <h1>Hi, {{ session['name'] }}</h1>
-  <p id="signupPA"> Let's signup for full site access.</p>
+  <h1>Welcome:</h1>
+  <p id="signupPA"> Signup for full site access.</p>
   <p id="signupPB"> Enter your information below: </p>
 </container>
 
@@ -26,16 +26,19 @@
       <br />
       {{ signupform.inputpasswordb.label(class="form-label") }}
       {{ signupform.inputpasswordb(class="form-control") }}
-      <br />
-      {{ signupform.submit(class="btn btn-primary") }}
+      <container class="buttoncontainer">
+        <div class="bhsingbuttons">
+          {{ signupform.submit(class="bhsignbuttons") }}
+        </div>
+      </container>
     </form>
   </div>
 </container>
 
-<container id="bhsignbuttons">
-  <div class="bhsignbuttons">
-    <a href="{{ url_for('signin') }}" class="btn btn-primary">Login</a>
-    <a href="{{ url_for('home') }}" class="btn btn-primary">Home</a>
+<container class="buttoncontainer">
+  <div>
+    <a href="{{ url_for('signin') }}" class="bhsignbuttons">Login</a>
+    <a href="{{ url_for('home') }}" class="bhsignbuttons">Home</a>
   </div>
 </container>
 

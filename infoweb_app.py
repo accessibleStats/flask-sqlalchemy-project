@@ -151,11 +151,6 @@ def signup():
     session['password'] = None
     # instantiate signup form
     signupform = SignupForm()
-    # this grabs the user input from the previous page, if entered. if not, the user will be "Guest"
-    if session['name'] == None:
-        session['name'] = 'Guest'
-    else:
-        pass
     # form data validation check (if submit button is pressed, and data is valid, execute code)
     if signupform.validate_on_submit():
         email = Patrons.query.filter_by(

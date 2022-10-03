@@ -19,11 +19,12 @@
       {{ signinform.passw.label(class="form-label") }}
       {{ signinform.passw(class="form-control") }}
       <br />
-      {{ signinform.submit(class="btn btn-primary") }}
+      {{ signinform.submit(class="bhsignbuttons") }}
     </form>
   </div>
-  <br /><br />
-  <a href="{{ url_for('home') }}" class="btn btn-primary">Back to Homepage</a>
+  <div id="backhome">
+    <a href="{{ url_for('home') }}" class="bhsignbuttons">Back to Homepage</a>
+  </div>
 </center>
 
 
