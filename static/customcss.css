@@ -130,7 +130,7 @@ h1 {
     font-family: 'Roboto', sans-serif;
     color: black;
     text-align: center;
-    text-decoration: #6930c3 wavy underline;
+    /* text-decoration: #6930c3 wavy underline; */
 }
 
 #signupPB {
