@@ -1,155 +1,42 @@
-/* apply the following to all H1's */
-
-h1 {
-    color: black;
-    font-size: 3em;
-    font-weight: bold;
-}
-
-/*div.containerA {
-    width: 200px;
-    text-align: center;
-    background-color: white;
-}*/
-
-/* CSS for Layout page - impacts all extentions of layout page */
-#layoutcontainera {
+/* classes for signup and signin pages */
+.signupform {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    height: 350px;
-    width: auto;
-    flex-wrap: wrap;
-}
-
-#static_image {
-    width: 100%;
+    align-items: center;
     height: 100%;
-    background-image: url("banner-g604d86a61_1920.jpg");
-    background-size: cover;
+    width: 100%;
+    background-color: #48bfe3;
+    padding: 1.5rem;
+    border: .5px;
+    border-style: solid;
+    border-color: black;
+    font-family: 'Roboto', sans-serif;
 }
 
-/* Code for altering Homepage objects */
-#homewho {
-    font-size: 20px;
+.h1 {
     font-family: 'Roboto', sans-serif;
     color: black;
     text-align: center;
-}
-
-#homecontainera {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    background-color: #48bfe3;
-    border: 1px;
-    border-style: solid;
-    border-color: black;
-    padding: 15px;
-}
-
-
-#homecontainerc {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 500px;
-    width: 100%;
-    background-color: #000080;
-}
-
-#homecontainerc div {
-    height: 200px;
-    width: 200px;
-}
-
-#homediv01 {
-    background-color: #80ffdb;
-}
-
-#homediv01:hover {
-    background-color: #f90707;
-    border-radius: 50%;
-}
-
-#homediv02 {
-    background-color: #64dfdf;
-}
-
-#homediv02:hover {
-    background-color: #000000;
-    border-radius: 50%;
-}
-
-#homediv03 {
-    background-color: #48bfe3;
-}
-
-#homediv03:hover {
-    background-color: #f90707;
-    border-radius: 50%;
-}
-
-#homediv04 {
-    background-color: #5390d9;
-}
-
-#homediv04:hover {
-    background-color: #000000;
-    border-radius: 50%;
-}
-
-#homediv05 {
-    background-color: #6930c3;
-}
-
-#homediv05:hover {
-    background-color: #f90707;
-    border-radius: 50%;
-}
-
-/* code for signup page */
-.signupcontainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    background-color: #48bfe3;
-    border: 10px;
-    border-style: solid;
-    border-color: black;
-    padding: 20px;
+    font-weight: bold;
+    font-size: 3.5rem;
 }
 
 #signupPA {
-    font-size: 26px;
+    font-size: 2rem;
     font-family: 'Roboto', sans-serif;
     color: black;
     text-align: center;
+    padding: 1rem;
     /* text-decoration: #6930c3 wavy underline; */
 }
 
-#signupPB {
-    font-size: 30px;
+.signupPB {
+    font-size: 3rem;
     font-family: 'Roboto', sans-serif;
     color: black;
     text-align: center;
     font-weight: bold;
-}
-
-#signupcontainerb {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    background-color: #48bfe3;
-    padding: 15px;
 }
 
 .buttoncontainer {
@@ -181,10 +68,128 @@ h1 {
     border-radius: 40%;
     box-shadow: 1px 1px #c6eff9, -.5em 0 .7em #c6eff9;
     transform: translateY(-.5rem);
+    cursor: pointer;
 }
 
-/* code for signin page */
+/* Layout page - impacts all extentions of layout page */
+#layoutcontainera {
+    display: flex;
+    justify-content: center;
+    height: 350px;
+    width: auto;
+    flex-wrap: wrap;
+}
 
-#backhome {
-    padding: 3rem;
+#static_image {
+    width: 100%;
+    height: 100%;
+    background-image: url("banner-g604d86a61_1920.jpg");
+    background-size: center/80%;
+}
+
+/* Homepage objects */
+#homewho {
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+    text-align: center;
+}
+
+.containera {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #48bfe3;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    padding: 15px;
+}
+
+/* Code for fun container and divs on homepage and sign in page */
+.containerc {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 500px;
+    width: 100%;
+    background-color: #000080;
+}
+
+.div01 {
+    height: 200px;
+    width: 200px;
+}
+
+.div01 {
+    background-color: #80ffdb;
+}
+
+.div01:hover {
+    background-color: #f90707;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.div02 {
+    height: 200px;
+    width: 200px;
+}
+
+.div02 {
+    background-color: #64dfdf;
+}
+
+.div02:hover {
+    background-color: #000000;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.div03 {
+    height: 200px;
+    width: 200px;
+}
+
+.div03 {
+    background-color: #48bfe3;
+}
+
+.div03:hover {
+    background-color: #f90707;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.div04 {
+    height: 200px;
+    width: 200px;
+}
+
+.div04 {
+    background-color: #5390d9;
+}
+
+.div04:hover {
+    background-color: #000000;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.div05 {
+    height: 200px;
+    width: 200px;
+}
+
+.div05 {
+    background-color: #6930c3;
+}
+
+.div05:hover {
+    background-color: #f90707;
+    border-radius: 50%;
+    cursor: pointer;
 }

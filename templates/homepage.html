@@ -1,12 +1,12 @@
 {%extends 'layout.html'%}
 
 {%block contentA%}
-<container id="homecontainera">
-    <h1> Your Homepage for Cool Information </h1>
+<container class="containera" id="homecontainera">
+    <h1 class="h1"> Your Homepage for Cool Information </h1>
 
     <h2 id="homewho">Who's ready?</h2>
 
-    <h1>Let's get started! <span class="label label-default"></span></h1>
+    <h1 class="h1">Let's get started! <span class="label label-default"></span></h1>
 
     <a href="{{ url_for('signin') }}" type="button" id="homebtn" class="bhsignbuttons">Click here to enter
         your account information!</a>
@@ -18,16 +18,14 @@
 {%endblock contentA%}
 
 {%block contentB%}
-<container id="homecontainerc">
-    <div id="homediv01"></div>
-    <div id="homediv02"></div>
-    <div id="homediv03"></div>
-    <div id="homediv04"></div>
-    <div id="homediv05"></div>
+<container class="containerc" id="homecontainerc">
+    <div class="div01" id="homediv01"></div>
+    <div class="div02" id="homediv02"></div>
+    <div class="div03" id="homediv03"></div>
+    <div class="div04" id="homediv04"></div>
+    <div class="div05" id="homediv05"></div>
 </container>
 
-<div class="homepage_img" id="homeimgage">
-</div>
 {%endblock contentB%}
 
 {%block contentC%}
